@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#7d8463">
+<title>popo · 专属工作台</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<header class="top-bar">
+  <div class="app-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" aria-hidden="true"><defs><path id="sTitleFlowers" d="m8.661 40.827l5.837-3.226l2.534-.461l11.06 4.071l9.37 1.075l8.985-1.69l10.061-3.763l6.912 3.302l-4.684 3.149l-6.298 1.69l2.841 3.763l.893 4.896l-7.958-.441l-5.223-1.383l-3.072 5.069l-3.392 2.423l-5.056-4.343l-2.15-3.302l-4.455 1.843l-7.757.845l-.718-4.878l2.331-3.187l-6.989-2.995z"/></defs><g fill="#b1cc33"><use href="#sTitleFlowers"/><use href="#sTitleFlowers"/></g><path fill="#5c9e31" d="m38.466 44.194l6.336-1.769l5.901-1.989l4.045-4.052l5.747 2.284l2.947 1.989l-3.095 2.063l-6.262 1.916l-.884 1.178l2.579 4.568l.392 3.25l-6.728-.524l-6.452-1.3l-.768 2.258L36 59V45z"/><path fill="#ffa7c0" d="m17.004 33.533l.919-8.227l2.941-7.705l1.837.563l3.976 3.384l1.789-2.541l4.274-4.376l3.566-1.932l5.749 4.082l2.175 2.273l1.506 2.447l3.516-2.723l2.497-1.177l3.43 9.856l.242 8.448l-4.718 4.531l-8.407 2.995l-5.08.692l-5.201-.077l-6.835-2.151l-5.987-3.609z"/><path fill="#e67a94" d="m44.271 23.625l4.34-4.799l2.625-1.206l2.582 4.685l1.783 9.37l-.233 5.535l-6.039 3.912l-8.362 2.499l-4.796.39z"/><g fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"><path stroke-linejoin="round" d="M31.037 43.57a23.5 23.5 0 0 1-8.907 2.02a21 21 0 0 1-2.38-.11A27.6 27.6 0 0 1 8 41.14a20 20 0 0 1 9.698-4.035"/><path stroke-linejoin="round" d="M35.609 44.593a10.6 10.6 0 0 1-4.279 6.077q-.858.588-1.8 1.03c-5.42 2.61-12.96 2.43-12.96 2.43a11.36 11.36 0 0 1 3.18-8.65q1.186.125 2.38.11a23.5 23.5 0 0 0 8.907-2.02"/><path stroke-linejoin="round" d="M36.59 44.524a11 11 0 0 0 4.64 6.016q.891.565 1.86.98v.01C42.05 55.91 36 59 36 59s-5.18-2.95-6.47-7.3a13 13 0 0 0 1.8-1.03a10.6 10.6 0 0 0 4.276-6.07z"/><path stroke-linejoin="round" d="M36.781 45.07a10.95 10.95 0 0 0 4.449 5.47q.891.565 1.86.98v.01c5.57 2.47 13.08 2.1 13.08 2.1a11.65 11.65 0 0 0-3.67-8.56a11.4 11.4 0 0 0-1.56-1.19a16 16 0 0 0-3.447-1.603"/><path stroke-linejoin="round" d="M54.723 36.5c3.306.74 6.45 2.075 9.277 3.94a26.5 26.5 0 0 1-11.5 4.63a11.4 11.4 0 0 0-1.56-1.19a16.4 16.4 0 0 0-3.949-1.766m-10.685 2.449s-19.302-2.45-19.302-11.03s2.895-14.706 3.86-15.932s6.756 4.902 6.756 7.353"/><path stroke-linejoin="round" d="M44.993 24.954c0-2.45 5.79-8.579 6.756-7.353s3.86 7.353 3.86 15.932s-19.303 11.03-19.303 11.03"/><path stroke-miterlimit="10" d="M43.353 19.534s-4.698-6.317-7.047-6.317s-7.047 6.317-7.047 6.317"/></g></svg><span>popo</span></div>
+  <div class="top-actions">
+    <button class="icon-btn" id="btn-install" title="安装到主屏幕" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M16.458 9.165a2.29 2.29 0 0 0-2.292-2.291a.625.625 0 0 1-.625-.625a3.542 3.542 0 0 0-7.083 0c0 .345-.28.625-.625.625a2.292 2.292 0 1 0 0 4.583h8.333a2.29 2.29 0 0 0 2.292-2.292m1.25 0a3.54 3.54 0 0 1-3.542 3.542H5.833a3.542 3.542 0 0 1-.59-7.034a4.791 4.791 0 0 1 9.512 0a3.54 3.54 0 0 1 2.953 3.492m-8.334 4.584a.625.625 0 1 1 1.25 0v4.583h-1.25z"/><path fill="currentColor" d="M11.64 15.807a.625.625 0 0 1 .884.885l-2.083 2.083a.625.625 0 0 1-.883 0l-2.084-2.083a.626.626 0 0 1 .884-.885L10 17.45z"/></svg></button>
+    <button class="icon-btn" id="btn-settings" title="设置"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M128 80a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48m0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32m109.94-52.79a8 8 0 0 0-3.89-5.4l-29.83-17l-.12-33.62a8 8 0 0 0-2.83-6.08a111.9 111.9 0 0 0-36.72-20.67a8 8 0 0 0-6.46.59L128 41.85L97.88 25a8 8 0 0 0-6.47-.6a112.1 112.1 0 0 0-36.68 20.75a8 8 0 0 0-2.83 6.07l-.15 33.65l-29.83 17a8 8 0 0 0-3.89 5.4a106.5 106.5 0 0 0 0 41.56a8 8 0 0 0 3.89 5.4l29.83 17l.12 33.62a8 8 0 0 0 2.83 6.08a111.9 111.9 0 0 0 36.72 20.67a8 8 0 0 0 6.46-.59L128 214.15L158.12 231a7.9 7.9 0 0 0 3.9 1a8.1 8.1 0 0 0 2.57-.42a112.1 112.1 0 0 0 36.68-20.73a8 8 0 0 0 2.83-6.07l.15-33.65l29.83-17a8 8 0 0 0 3.89-5.4a106.5 106.5 0 0 0-.03-41.52m-15 34.91l-28.57 16.25a8 8 0 0 0-3 3c-.58 1-1.19 2.06-1.81 3.06a7.94 7.94 0 0 0-1.22 4.21l-.15 32.25a95.9 95.9 0 0 1-25.37 14.3L134 199.13a8 8 0 0 0-3.91-1h-3.83a8.1 8.1 0 0 0-4.1 1l-28.84 16.1A96 96 0 0 1 67.88 201l-.11-32.2a8 8 0 0 0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.1 8.1 0 0 0-3-3.06l-28.6-16.29a90.5 90.5 0 0 1 0-28.26l28.52-16.28a8 8 0 0 0 3-3c.58-1 1.19-2.06 1.81-3.06a7.94 7.94 0 0 0 1.22-4.21l.15-32.25a95.9 95.9 0 0 1 25.37-14.3L122 56.87a8 8 0 0 0 4.1 1h3.64a8.1 8.1 0 0 0 4.1-1l28.84-16.1A96 96 0 0 1 188.12 55l.11 32.2a8 8 0 0 0 1.22 4.22c.62 1 1.23 2 1.8 3.06a8.1 8.1 0 0 0 3 3.06l28.6 16.29a90.5 90.5 0 0 1 .05 28.29Z"/></svg></button>
+  </div>
+</header>
+
+<!-- 主内容区域 -->
+<main class="page-area">
+
+  <!-- ============ 首页 ============ -->
+  <section class="page" id="page-home">
+    <div class="greeting">
+      <span id="greeting-text">popo，今天也要元气满满哦！</span>
+      <span class="date-sub" id="home-date"></span>
+    </div>
+    <div class="home-modules" id="home-modules">
+      <!-- 模块会被 JS 按顺序渲染 -->
+    </div>
+  </section>
+
+  <!-- ============ 今日计划 ============ -->
+  <section class="page" id="page-plan" hidden>
+    <div class="page-header">
+      <h2 class="page-title">今日计划</h2>
+      <div class="page-header-right">
+        <button class="icon-btn" id="btn-calendar" title="日历"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM1 14V4h14v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1m7-6.507c1.664-1.711 5.825 1.283 0 5.132c-5.825-3.85-1.664-6.843 0-5.132"/></svg></button>
+        <button class="icon-btn" id="btn-new-tomorrow" title="新建明日计划"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M240 96a8 8 0 0 1-8 8h-16v16a8 8 0 0 1-16 0v-16h-16a8 8 0 0 1 0-16h16V72a8 8 0 0 1 16 0v16h16a8 8 0 0 1 8 8m-96-40h8v8a8 8 0 0 0 16 0v-8h8a8 8 0 0 0 0-16h-8v-8a8 8 0 0 0-16 0v8h-8a8 8 0 0 0 0 16m72.77 97a8 8 0 0 1 1.43 8A96 96 0 1 1 95.07 37.8a8 8 0 0 1 10.6 9.06a88.07 88.07 0 0 0 103.47 103.47a8 8 0 0 1 7.63 2.67m-19.39 14.88c-1.79.09-3.59.14-5.38.14A104.11 104.11 0 0 1 88 64c0-1.79 0-3.59.14-5.38a80 80 0 1 0 109.24 109.24Z"/></svg></button>
+      </div>
+    </div>
+    <div class="plan-date-display" id="plan-date-display"></div>
+
+    <!-- 今日必做 -->
+    <div class="card" id="top5-card">
+      <div class="card-title-row">
+        <span class="card-title">Must Do/今日必做</span>
+        <div class="note-palette-wrap">
+          <button class="note-palette-btn" id="btn-note-palette" title="更换便利贴颜色"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M200.77 53.89A103.27 103.27 0 0 0 128 24h-1.07A104 104 0 0 0 24 128c0 43 26.58 79.06 69.36 94.17A32 32 0 0 0 136 192a16 16 0 0 1 16-16h46.21a31.81 31.81 0 0 0 31.2-24.88a104.4 104.4 0 0 0 2.59-24a103.28 103.28 0 0 0-31.23-73.23m13 93.71a15.89 15.89 0 0 1-15.56 12.4H152a32 32 0 0 0-32 32a16 16 0 0 1-21.31 15.07C62.49 194.3 40 164 40 128a88 88 0 0 1 87.09-88h.9a88.35 88.35 0 0 1 88 87.25a89 89 0 0 1-2.18 20.35ZM140 76a12 12 0 1 1-12-12a12 12 0 0 1 12 12m-44 24a12 12 0 1 1-12-12a12 12 0 0 1 12 12m0 56a12 12 0 1 1-12-12a12 12 0 0 1 12 12m88-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"/></svg></button>
+          <div class="note-palette-pop" id="note-palette-pop" hidden>
+            <span class="note-dot" data-bg="#F8C8C8" style="background:#F8C8C8" title="粉"></span>
+            <span class="note-dot" data-bg="#EEEEAE" style="background:#EEEEAE" title="黄"></span>
+            <span class="note-dot" data-bg="#CDDC84" style="background:#CDDC84" title="绿"></span>
+            <span class="note-dot" data-bg="#E0EEE8" style="background:#E0EEE8" title="青"></span>
+            <span class="note-dot" data-bg="#6B6882" style="background:#6B6882" title="紫"></span>
+            <span class="note-dot" data-bg="#E4C6D0" style="background:#E4C6D0" title="玫"></span>
+            <span class="note-dot note-dot-default" data-bg="" style="background:#bcc48f" title="默认嫩豆绿"></span>
+          </div>
+        </div>
+      </div>
+      <div class="top5-list" id="top5-list"></div>
+    </div>
+
+    <!-- 时间段计划 -->
+    <div class="card" id="timeblocks-card">
+      <div class="card-title-row">
+        <span class="card-title">Schedule/日程安排</span>
+        <button class="btn-small" id="btn-add-timeblock">+ 添加时间段</button>
+      </div>
+      <div class="timeblock-table-wrap">
+        <table class="timeblock-table" id="timeblock-table">
+          <thead>
+            <tr>
+              <th class="col-time">时间段</th>
+              <th class="col-planned">计划完成</th>
+              <th class="col-actual">实际完成</th>
+              <th class="col-ops"></th>
+            </tr>
+          </thead>
+          <tbody id="timeblock-tbody"></tbody>
+        </table>
+      </div>
+      <div class="timeblock-empty" id="timeblock-empty" hidden>还没有时间段，点击右上角添加 →</div>
+    </div>
+
+    <!-- 每日反思 -->
+    <div class="card" id="reflection-card">
+      <div class="card-title">Reflection/反思</div>
+      <div class="reflection-wrap">
+        <textarea id="reflection-textarea" class="reflection-area" placeholder="不贵于无过，而贵于能改过。"></textarea>
+        <div class="reflection-count" id="reflection-count">0 字</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 备忘 ============ -->
+  <section class="page" id="page-memo" hidden>
+    <div class="page-header">
+      <h2 class="page-title">Memo/备忘</h2>
+    </div>
+    <div class="memo-input-bar">
+      <input type="text" id="memo-input" class="memo-input" placeholder="此刻突然想到什么？直接写下来...">
+      <button class="btn-icon" id="memo-image" title="添加本地图片"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M13.168 9.565c-.217-.484-2.153-.674-3.336.858a3.012 3.012 0 0 0 2.547 4.835a2.945 2.945 0 0 0 2.814-2.792c.137-1.973-1.54-3.22-2.024-2.9zm-.145.482c-.293.2-1.386-.362-2.25 1.037c-1.555 2.525 2.805 4.207 3.272 1.26a2.29 2.29 0 0 0-1.022-2.296z"/><path d="M7.116.17C4.392.015 1.263-.35.454 2.532A17.2 17.2 0 0 0 .527 7.85a.386.386 0 0 0 .394.384c.518 0 .384-.353.65-4.21C1.814 1.25 3.325 1.295 7.14.942a.387.387 0 0 0-.023-.773zM.11 16.662c-.642 7.572 1.494 7.826 7.44 6.885a.39.39 0 1 0-.065-.778c-1.604 0-4.925.138-5.529-.79A19.6 19.6 0 0 1 .88 16.662a.386.386 0 0 0-.77 0M16.76 1.076c3.84.915 5.89-.259 6.027 4.07c.096 2.149-.072 3.134.519 3.11a.38.38 0 0 0 .363-.404c.039-1.706 1.15-4.925-.93-6.662c-1.74-1.376-4.281-.723-5.86-.868a.386.386 0 1 0-.12.754m6.211 14.48c-.517 6.596-.91 6.666-4.732 7.12c-.72.106-1.555.293-2.28.324a.39.39 0 0 0-.02.778q1.192.06 2.38 0c2.334-.047 4.573-.3 5.25-2.795c.204-.873.635-5.8-.203-5.814a.394.394 0 0 0-.394.387M6.777 7.689c-2.987.547-3.057 6.46-1.802 8.769c1.094 1.967 3.458 1.835 5.923 1.9c3.593.1 7.258.484 8.63-2.608a8.4 8.4 0 0 0 .573-3.482c-.058-1.188-.368-2.81-.91-3.41a2.74 2.74 0 0 0-1.575-.87a3.095 3.095 0 0 0-2.332-3.2c-1.934-.3-3.9-.333-5.843-.101a3.16 3.16 0 0 0-2.664 3.002m8.244-1.991a21.5 21.5 0 0 0-5.345.122c-2.202.518-1.228 2.95-2.272 3.084c-2.372.324-2.074 5.076-1.312 6.727a1.84 1.84 0 0 0 5.35 1.088c2.733.327 5.488.432 8.238.314a3.24 3.24 0 0 0 2.837-1.763a8.35 8.35 0 0 0 .216-5.57a1.91 1.91 0 0 0-1.478-.99c-.79-.132.117-2.44-2.224-3.004z"/></g></svg></button>
+      <button class="btn-primary" id="memo-save">保存</button>
+      <input type="file" id="memo-file" accept="image/*" multiple hidden>
+    </div>
+    <div class="memo-image-previews" id="memo-image-previews"></div>
+    <div class="memo-folders" id="memo-folders"></div>
+    <div class="memo-list" id="memo-list"></div>
+  </section>
+
+  <!-- ============ popo知识库 ============ -->
+  <section class="page" id="page-knowledge" hidden>
+    <div class="page-header">
+      <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M232.7 50.48C229 45.7 221.84 40 209 40c-16.85 0-38.46 11.28-57.81 30.16A140 140 0 0 0 136 87.53V56a8 8 0 0 0-16 0v31.53a140 140 0 0 0-15.15-17.37C85.49 51.28 63.88 40 47 40c-12.84 0-20 5.7-23.7 10.48c-6.82 8.77-12.18 24.08-.21 71.2c6.05 23.83 19.51 33 30.63 36.42A44 44 0 0 0 128 205.27a44 44 0 0 0 74.28-47.17c11.12-3.4 24.57-12.59 30.63-36.42c6.72-26.44 11.94-55.58-.21-71.2M92 208a28.12 28.12 0 0 1-3.14-56a8 8 0 1 0-1.76-15.9a43.64 43.64 0 0 0-20.74 7.9c-8.43.09-22-3.57-27.76-26.26c-2.88-11.35-11.6-45.88-2.66-57.44C37.37 58.46 40.09 56 47 56c27.27 0 73 44.88 73 71.67V180a28 28 0 0 1-28 28m125.4-90.26c-5.77 22.69-19.33 26.34-27.77 26.26a43.6 43.6 0 0 0-20.74-7.95a8 8 0 1 0-1.76 15.9A28.11 28.11 0 1 1 136 180v-52.33C136 100.88 181.69 56 209 56c6.95 0 9.66 2.46 11.1 4.3c8.95 11.56.18 46.09-2.7 57.44"/></svg> popo知识库</h2>
+    </div>
+    <div class="knowledge-search-bar">
+      <input type="text" id="knowledge-search" class="search-input" placeholder="搜索句子内容、来源、文件夹或标签...">
+    </div>
+    <div class="knowledge-filters" id="knowledge-filters">
+      <div class="filter-group">
+        <span class="filter-label">文件夹</span>
+        <div class="filter-chips" id="folder-chips"></div>
+        <button class="btn-mini" id="btn-new-folder">+ 新建</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">标签</span>
+        <div class="filter-chips" id="tag-chips"></div>
+      </div>
+    </div>
+    <div class="knowledge-sort" id="knowledge-sort"></div>
+    <div class="knowledge-list" id="knowledge-list"></div>
+    <button class="fab" id="fab-add-sentence" title="添加句子">+</button>
+  </section>
+</main>
+
+<!-- ============ 底部导航 ============ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-page="home">
+    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M122.34 109.66a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0 0-11.32l-40-40a8 8 0 0 0-11.32 0l-40 40a8 8 0 0 0 0 11.32ZM128 35.31L156.69 64L128 92.69L99.31 64Zm5.66 111a8 8 0 0 0-11.32 0l-40 40a8 8 0 0 0 0 11.32l40 40a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0 0-11.32ZM128 220.69L99.31 192L128 163.31L156.69 192Zm109.66-98.35l-40-40a8 8 0 0 0-11.32 0l-40 40a8 8 0 0 0 0 11.32l40 40a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0 0-11.32M192 156.69L163.31 128L192 99.31L220.69 128Zm-82.34-34.35l-40-40a8 8 0 0 0-11.32 0l-40 40a8 8 0 0 0 0 11.32l40 40a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0 0-11.32M64 156.69L35.31 128L64 99.31L92.69 128Z"/></svg></span>
+    <span class="nav-label">首页</span>
+  </button>
+  <button class="nav-item" data-page="plan">
+    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M23 .682a2.76 2.76 0 0 0-1.86-.55c-.24.026-.477.09-.699.19a4 4 0 0 0-.81.6a.34.34 0 0 0-.077.377q.027.064.077.112a.33.33 0 0 0 .48 0q.248-.227.53-.41a1.4 1.4 0 0 1 .58-.17a2 2 0 0 1 1.28.46a1.41 1.41 0 0 1 .65 1.06c.003.347-.076.69-.23 1c-.162.317-.367.61-.61.87L21.1 5.58c-.3-.32-.61-.64-.94-.94c-.16-.15-.33-.28-.49-.42L19.34 4l-.84-.49l-.16-.12l.27-.39l.68-.849a.3.3 0 0 0 .05-.23c0-.15-.15-.38-.45-.2c-.29-.22-.54-.48-.82-.7a2.7 2.7 0 0 0-.549-.32a1.3 1.3 0 0 0-1 0c-.307.151-.59.347-.84.58q-.495.44-.93.94q-.6.758-1.109 1.58a.35.35 0 0 0 0 .49a.34.34 0 0 0 .48 0c.3-.31.61-.59.91-.87q.671-.635 1.41-1.19c.14-.12.31-.27.49-.4s.16-.16.27-.14q.194.03.379.1c.28.13.55.3.83.44l-.35.41c-1.39 1.63-4.439 5.198-5.689 6.818a3.5 3.5 0 0 0-.65 1.11c0 .28-.13 2.289-.11 3.109q-.017.15 0 .3q-.23.14-.44.31q-.13.113-.239.25q-.104.133-.19.28c-.55.899-.43.999-.42.999a.3.3 0 0 0 .12.19a.34.34 0 0 0 .21.09s.15.09.94-.61q.135-.105.24-.24q.114-.124.2-.27q.115-.197.2-.41c.221.041.448.041.67 0q1.296-.3 2.539-.78a1 1 0 0 0 .42-.31c.25-.27.74-.84 1.35-1.589C18.97 9.728 21.78 6.12 22.91 4.81c.291-.33.534-.7.72-1.1A3.2 3.2 0 0 0 24 2.372a2.3 2.3 0 0 0-1-1.69m-7.757 11.846l-.19.2q-1.098.455-2.26.71v-2.73c.09 0-.62.49 5.089-6.787l.13.13l.54.65q.393.477.89.849q.538.357 1.119.64c-.85 1-1.83 2.14-2.73 3.219c-1.099 1.35-2.098 2.59-2.588 3.119"/><path d="m18.632 17.526l-.7-1.6a.31.31 0 0 0-.406-.234a.31.31 0 0 0-.208.307a.3.3 0 0 0 .034.128l.69 1.7c.54 1.079 1 1.629 1.22 2.069a1 1 0 0 1 .14.74c0 .05-.1.06-.2.12q-.526.277-1.1.43a43 43 0 0 1-7.098 1.239c-2.37.3-4.763.38-7.148.24a6 6 0 0 1-1-.17a2 2 0 0 1-.28-.13a6 6 0 0 1-.31-.65a3 3 0 0 1-.22-.65a66 66 0 0 1-.919-8.347a52.6 52.6 0 0 1 0-8.078c.93-.22 2.19-.43 3.599-.61c1.89-.24 3.999-.41 5.998-.48a.34.34 0 0 0 .34-.35a.35.35 0 0 0-.35-.34c-2 0-4.129.16-6.048.35a35 35 0 0 0-3.999.61a.46.46 0 0 0-.34.37a47.3 47.3 0 0 0-.23 8.588a63 63 0 0 0 .91 8.517q.09.367.22.72q.203.483.46.94a2.4 2.4 0 0 0 1.74.82c1.978.169 3.968.125 5.937-.13a42 42 0 0 0 9.747-2c.68-.29 1-.64 1.07-.91a1.5 1.5 0 0 0-.07-.86c-.24-.49-.77-.999-1.48-2.349"/><path d="M9.674 11.628a.4.4 0 0 0-.47-.27c-.08 0 0-.08-.35 0c-.77.09-1.999.3-3.059.45c-.32.05-.63.09-.91.15c-.649.12-1.139.26-1.329.28a.28.28 0 0 0 0 .55q.751.118 1.51.1c.45 0 1-.06 1.47-.11a18 18 0 0 0 2.339-.38c.73-.24.86-.55.8-.77M5.456 7.77q-1.017.224-2 .57a.29.29 0 0 0-.21.34a.28.28 0 0 0 .34.2c.89-.14 1.75-.17 2.65-.24a98 98 0 0 0 3.998-.43c.38-.05.78-.08 1.18-.17q.193.005.38-.04c.06 0 .08-.07.14-.11a.38.38 0 0 0 .31-.43c-.06-.46-.86-.46-.94-.46c-1.71.12-3.16.33-4.509.51c-.46.1-.9.16-1.34.26m3.36 8.067c-.13 0-.29 0-.47.05l-1.3.2c-.68.11-1.4.22-1.95.36q-.456.115-.899.28h-.06a.26.26 0 0 0-.15 0s-.13.49.28.53c.17 0 .5.06 1 .06a19 19 0 0 0 2-.17c.489-.06.999-.13 1.329-.2q.213-.035.42-.1a1.8 1.8 0 0 0 .47-.29a.4.4 0 0 0 .17-.53c-.09-.03-.13-.17-.84-.19"/></g></svg></span>
+    <span class="nav-label">计划</span>
+  </button>
+  <button class="nav-item" data-page="memo">
+    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16m0 176H48V48h24v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24zM152 88a31.9 31.9 0 0 0-24 10.86A32 32 0 0 0 72 120c0 36.52 50.28 62.08 52.42 63.16a8 8 0 0 0 7.16 0C133.72 182.08 184 156.52 184 120a32 32 0 0 0-32-32m-24 78.93c-13.79-7.79-40-26.75-40-46.93a16 16 0 0 1 32 0a8 8 0 0 0 16 0a16 16 0 0 1 32 0c0 20.19-26.21 39.15-40 46.93"/></svg></span>
+    <span class="nav-label">备忘</span>
+  </button>
+  <button class="nav-item" data-page="knowledge">
+    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M232.7 50.48C229 45.7 221.84 40 209 40c-16.85 0-38.46 11.28-57.81 30.16A140 140 0 0 0 136 87.53V56a8 8 0 0 0-16 0v31.53a140 140 0 0 0-15.15-17.37C85.49 51.28 63.88 40 47 40c-12.84 0-20 5.7-23.7 10.48c-6.82 8.77-12.18 24.08-.21 71.2c6.05 23.83 19.51 33 30.63 36.42A44 44 0 0 0 128 205.27a44 44 0 0 0 74.28-47.17c11.12-3.4 24.57-12.59 30.63-36.42c6.72-26.44 11.94-55.58-.21-71.2M92 208a28.12 28.12 0 0 1-3.14-56a8 8 0 1 0-1.76-15.9a43.64 43.64 0 0 0-20.74 7.9c-8.43.09-22-3.57-27.76-26.26c-2.88-11.35-11.6-45.88-2.66-57.44C37.37 58.46 40.09 56 47 56c27.27 0 73 44.88 73 71.67V180a28 28 0 0 1-28 28m125.4-90.26c-5.77 22.69-19.33 26.34-27.77 26.26a43.6 43.6 0 0 0-20.74-7.95a8 8 0 1 0-1.76 15.9A28.11 28.11 0 1 1 136 180v-52.33C136 100.88 181.69 56 209 56c6.95 0 9.66 2.46 11.1 4.3c8.95 11.56.18 46.09-2.7 57.44"/></svg></span>
+    <span class="nav-label">知识库</span>
+  </button>
+</nav>
+
+<!-- ============ 弹窗容器 ============ -->
+<div class="modal" id="modal-root" hidden></div>
+
+<!-- ============ 轻提示 ============ -->
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/storage.js" defer></script>
+<script src="js/utils.js" defer></script>
+<script src="js/cloud.js" defer></script>
+<script src="js/memo.js" defer></script>
+<script src="js/knowledge.js" defer></script>
+<script src="js/plan.js" defer></script>
+<script src="js/home.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
