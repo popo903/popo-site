@@ -357,12 +357,28 @@ body {
 
 .memo-list { display: flex; flex-direction: column; gap: 10px; }
 .memo-item {
-  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 0;
   position: relative;
+  overflow: hidden; /* M10：左滑时裁剪平移层，露出删除按钮 */
 }
+/* M10：左滑平移层（内容外包裹）与露出的删除按钮 */
+.memo-swipe-inner {
+  background: var(--color-surface);
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  position: relative; z-index: 1;
+  transition: transform 0.2s ease;
+  touch-action: pan-y; /* 纵向滚动交给页面，横向手势归条目 */
+}
+.memo-swipe-del {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 76px; z-index: 0;
+  border: none; border-radius: var(--radius);
+  background: #c96f5e; color: #fff;
+  font-size: 13px; cursor: pointer; font-family: inherit;
+}
+.memo-swipe-del:active { background: #b85d4c; }
 .memo-time {
   font-size: 12px; color: var(--color-text-light);
   margin-bottom: 6px;
