@@ -13,6 +13,9 @@
   // N6：当前展开全文的备忘 id（仅界面状态，不持久化）
   var expandedIds = {};
 
+  // M10：当前左滑展开删除按钮的备忘 id（仅界面状态）
+  var swipeOpenId = null;
+
   // 每次 add 的递增序号（浏览器 Date.now 精度受限，同一毫秒内可能相同）
   var _addSeq = 0;
 
@@ -182,6 +185,7 @@
   // ============== 渲染 ==============
 
   function render() {
+    swipeOpenId = null; // M10：重渲染后左滑状态失效
     renderFolders();
     var list = Utils.$('#memo-list');
     if (!list) return;
@@ -277,6 +281,10 @@
     item.dataset.id = memo.id;
     item.draggable = true; // 可拖动到上方文件夹归类
 
+    // M10：内容包进 swipe-inner（左滑平移层），露出右侧删除按钮
+    var inner = Utils.el('div', 'memo-swipe-inner');
+    item.appendChild(inner);
+
     var cat = categoryOf(memo.category);
     var badge = Utils.el('span', 'memo-cat-badge' + (cat ? ' colored' : ''),
       (cat ? cat.icon : INBOX.icon) + '<span class="badge-text">' + (cat ? cat.label : '未分类') + '</span>');
@@ -303,10 +311,10 @@
       '<span class="memo-del" title="删除">' + Utils.ICONS.del + '</span>'
     );
 
-    item.appendChild(badge);
-    item.appendChild(time);
-    item.appendChild(content);
-    item.appendChild(toggle);
+    inner.appendChild(badge);
+    inner.appendChild(time);
+    inner.appendChild(content);
+    inner.appendChild(toggle);
 
     if (memo.images && memo.images.length) {
       var imgs = Utils.el('div', 'memo-images');
@@ -317,7 +325,7 @@
         img.alt = '备忘图片';
         imgs.appendChild(img);
       });
-      item.appendChild(imgs);
+      inner.appendChild(imgs);
     }
 
     // S4：星级评价 + 反馈入口
@@ -333,9 +341,14 @@
       '</div>' +
       (memo.feedback ? '<div class="memo-feedback-text">' + Utils.esc(memo.feedback) + '</div>' : '')
     );
-    item.appendChild(review);
+    inner.appendChild(review);
 
-    item.appendChild(actions);
+    inner.appendChild(actions);
+
+    // M10：左滑露出的删除按钮
+    var swipeDel = Utils.el('button', 'memo-swipe-del', '删除');
+    swipeDel.type = 'button';
+    item.appendChild(swipeDel);
     return item;
   }
 
@@ -497,27 +510,114 @@
       if (e.key === 'Enter') { e.preventDefault(); handleSave(); }
     });
 
+    // ---- M10：左滑删除手势 ----
+    var SWIPE_W = 76;        // 完全展开的平移量（= 删除按钮宽度）
+    var SWIPE_OPEN_AT = -56; // 松手时平移超过此值则吸附展开
+    var SWIPE_MAX = 84;      // 可平移的最大距离（含橡皮筋余量）
+    var touchSwipe = { inner: null, id: null, startX: 0, startY: 0, dx: 0, baseOpen: 0, tracking: false, moved: false };
+
+    function setSwipeX(inner, x) {
+      inner.style.transform = x ? 'translateX(' + x + 'px)' : '';
+    }
+
+    function closeSwipe() {
+      if (!swipeOpenId) return;
+      list.querySelectorAll('.memo-item.swipe-open').forEach(function (it) {
+        it.classList.remove('swipe-open');
+        var inn = it.querySelector('.memo-swipe-inner');
+        if (inn) { inn.style.transition = ''; setSwipeX(inn, 0); }
+      });
+      swipeOpenId = null;
+    }
+
+    list.addEventListener('touchstart', function (e) {
+      var t = e.touches[0];
+      touchSwipe.moved = false;
+      var inner = e.target.closest ? e.target.closest('.memo-swipe-inner') : null;
+      if (!inner) {
+        // 点在删除按钮上时保持展开，其他区域点按则收起
+        if (!e.target.closest('.memo-swipe-del')) closeSwipe();
+        return;
+      }
+      var item = inner.closest('.memo-item');
+      if (swipeOpenId && swipeOpenId !== item.dataset.id) closeSwipe();
+      touchSwipe.id = item.dataset.id;
+      touchSwipe.inner = inner;
+      touchSwipe.startX = t.clientX;
+      touchSwipe.startY = t.clientY;
+      touchSwipe.baseOpen = (swipeOpenId === touchSwipe.id) ? -SWIPE_W : 0;
+      touchSwipe.dx = touchSwipe.baseOpen;
+      touchSwipe.tracking = true;
+      inner.style.transition = 'none';
+    }, { passive: true });
+
+    list.addEventListener('touchmove', function (e) {
+      if (!touchSwipe.tracking || !touchSwipe.inner) return;
+      var t = e.touches[0];
+      var dx = t.clientX - touchSwipe.startX;
+      var dy = t.clientY - touchSwipe.startY;
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8) {
+        // 纵向滚动意图：放弃平移并还原
+        touchSwipe.tracking = false;
+        touchSwipe.inner.style.transition = '';
+        if (touchSwipe.baseOpen === 0) setSwipeX(touchSwipe.inner, 0);
+        return;
+      }
+      var x = touchSwipe.baseOpen + ((touchSwipe.baseOpen === 0 && dx > 0) ? 0 : dx);
+      if (x > 0) x = 0;
+      if (x < -SWIPE_MAX) x = -SWIPE_MAX;
+      touchSwipe.dx = x;
+      setSwipeX(touchSwipe.inner, x);
+    }, { passive: true });
+
+    function endSwipe() {
+      if (!touchSwipe.tracking || !touchSwipe.inner) return;
+      var inner = touchSwipe.inner;
+      var item = inner.closest('.memo-item');
+      inner.style.transition = '';
+      touchSwipe.tracking = false;
+      if (Math.abs(touchSwipe.dx - touchSwipe.baseOpen) > 10) touchSwipe.moved = true;
+      if (touchSwipe.dx <= SWIPE_OPEN_AT) {
+        swipeOpenId = touchSwipe.id;
+        item.classList.add('swipe-open');
+        setSwipeX(inner, -SWIPE_W);
+      } else {
+        if (swipeOpenId === touchSwipe.id) swipeOpenId = null;
+        item.classList.remove('swipe-open');
+        setSwipeX(inner, 0);
+      }
+      touchSwipe.inner = null;
+    }
+    list.addEventListener('touchend', endSwipe, { passive: true });
+    list.addEventListener('touchcancel', endSwipe, { passive: true });
+
     // ---- 列表内：角标归类 + 图片查看 + 编辑 + 删除（事件委托） ----
+    // M9：用 closest 命中按钮（图标为内联 SVG，e.target 常是 svg/path 而非按钮本身）
     list.addEventListener('click', function (e) {
       var target = e.target;
       var item = target.closest ? target.closest('.memo-item') : null;
       if (!item) return;
       var id = item.dataset.id;
 
-      if (target.classList.contains('memo-cat-badge')) {
-        openCategoryPicker(id);
-      } else if (target.classList.contains('memo-thumb')) {
-        Utils.showModal({ bodyHTML: '<img src="' + target.src + '" style="max-width:100%;border-radius:8px;">' });
-      } else if (target.classList.contains('memo-del')) {
+      if (touchSwipe.moved) { touchSwipe.moved = false; return; } // M10：左滑手势后的误触吞掉
+
+      if (target.closest('.memo-swipe-del')) { // M10：左滑露出的删除按钮
+        closeSwipe();
         handleDelete(id);
-      } else if (target.classList.contains('memo-edit')) {
+      } else if (target.closest('.memo-cat-badge')) {
+        openCategoryPicker(id);
+      } else if (target.closest('.memo-thumb')) {
+        Utils.showModal({ bodyHTML: '<img src="' + target.closest('.memo-thumb').src + '" style="max-width:100%;border-radius:8px;">' });
+      } else if (target.closest('.memo-del')) {
+        handleDelete(id);
+      } else if (target.closest('.memo-edit')) {
         handleEdit(item, id);
-      } else if (target.classList.contains('star')) {
+      } else if (target.closest('.star')) {
         // S4：点星评分，再点当前评分则清除
-        var star = parseInt(target.dataset.star, 10);
+        var star = parseInt(target.closest('.star').dataset.star, 10);
         var current = item.querySelectorAll('.memo-stars .star.on').length;
         if (setRating(id, star === current ? 0 : star)) render();
-      } else if (target.classList.contains('memo-feedback-btn')) {
+      } else if (target.closest('.memo-feedback-btn')) {
         openFeedbackEditor(id); // S4 反馈弹窗
       }
     });
