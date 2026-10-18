@@ -56,6 +56,28 @@
     return 'https://api.github.com/repos/' + OWNER + '/' + DATA_REPO + '/contents/' + path;
   }
 
+  // 带超时的 fetch：默认 10 秒，防止网络不通时界面一直转圈
+  function fetchT(url, opts, timeoutMs) {
+    var ms = timeoutMs || 10000;
+    return new Promise(function (resolve, reject) {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () {
+        ctrl.abort();
+        reject(new Error('网络超时（' + Math.round(ms / 1000) + '秒），请检查网络后重试'));
+      }, ms);
+      opts = opts || {};
+      opts.signal = ctrl.signal;
+      fetch(url, opts).then(function (res) {
+        clearTimeout(timer);
+        resolve(res);
+      }, function (err) {
+        clearTimeout(timer);
+        if (ctrl.signal.aborted) return; // 已按超时拒绝
+        reject(err);
+      });
+    });
+  }
+
   // ========== token 管理 ==========
 
   function getToken() { return localStorage.getItem(LS_TOKEN) || ''; }
@@ -69,7 +91,7 @@
 
   // 校验 token 是否可用（能否读到数据仓库 gate.json；404 也算有效——仓库可访问）
   function verifyToken(token) {
-    return fetch(apiUrl('gate.json'), { headers: apiHeaders(token) })
+    return fetchT(apiUrl('gate.json'), { headers: apiHeaders(token) })
       .then(function (res) {
         if (res.status === 200 || res.status === 404) return true;
         if (res.status === 401) return false;
@@ -93,7 +115,7 @@
   // ========== gate.json（快捷密码哈希的云端存取） ==========
 
   function fetchGateHash(token) {
-    return fetch(apiUrl('gate.json'), { headers: apiHeaders(token) })
+    return fetchT(apiUrl('gate.json'), { headers: apiHeaders(token) })
       .then(function (res) {
         if (res.status === 404) return null; // 尚未设置密码
         if (!res.ok) throw new Error('读取门禁配置失败(' + res.status + ')');
@@ -107,18 +129,25 @@
       });
   }
 
+  // 先 GET 取现有 sha（有则覆盖更新，无则新建），避免新建时携带无效 sha
   function putGateHash(token, hash) {
-    return fetch(apiUrl('gate.json'), {
-      method: 'PUT',
-      headers: apiHeaders(token),
-      body: JSON.stringify({
-        message: 'update gate',
-        content: btoa(unescape(encodeURIComponent(hash))),
-        sha: null
+    localStorage.setItem(LS_GATE_HASH, hash); // 先落本地，保证离线也可用
+    return fetchT(apiUrl('gate.json'), { headers: apiHeaders(token) })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (json) {
+        var body = {
+          message: 'update gate',
+          content: btoa(unescape(encodeURIComponent(hash)))
+        };
+        if (json && json.sha) body.sha = json.sha;
+        return fetchT(apiUrl('gate.json'), {
+          method: 'PUT',
+          headers: apiHeaders(token),
+          body: JSON.stringify(body)
+        });
       })
-    }).then(function (res) {
+      .then(function (res) {
       if (!res.ok) throw new Error('写入门禁配置失败(' + res.status + ')');
-      localStorage.setItem(LS_GATE_HASH, hash);
       return true;
     });
   }
@@ -151,7 +180,7 @@
   function pullData() {
     var token = getToken();
     if (!token) return Promise.resolve(null);
-    return fetch(apiUrl('data.json'), { headers: apiHeaders(token) })
+    return fetchT(apiUrl('data.json'), { headers: apiHeaders(token) })
       .then(function (res) {
         if (res.status === 404) return null; // 云端还没有数据
         if (!res.ok) throw new Error('拉取云端数据失败(' + res.status + ')');
@@ -179,7 +208,7 @@
         content: btoa(unescape(encodeURIComponent(JSON.stringify(snapshot)))),
         sha: sha || undefined
       };
-      return fetch(apiUrl('data.json'), {
+      return fetchT(apiUrl('data.json'), {
         method: 'PUT',
         headers: apiHeaders(token),
         body: JSON.stringify(body)
@@ -187,7 +216,7 @@
     }
 
     // 先取当前 sha（文件可能被其他设备更新过），再 PUT；409 冲突时重试一次
-    return fetch(apiUrl('data.json'), { headers: apiHeaders(token) })
+    return fetchT(apiUrl('data.json'), { headers: apiHeaders(token) })
       .then(function (res) {
         if (res.status === 404) return null;
         if (!res.ok) throw new Error('读取云端 sha 失败(' + res.status + ')');
@@ -201,7 +230,7 @@
         }
         if (res.status === 409 || res.status === 422) {
           // 冲突：重取 sha 再推一次（最后写入者胜）
-          return fetch(apiUrl('data.json'), { headers: apiHeaders(token) })
+          return fetchT(apiUrl('data.json'), { headers: apiHeaders(token) })
             .then(function (r2) { return r2.ok ? r2.json() : null; })
             .then(function (j2) { return doPut(j2 ? j2.sha : null); })
             .then(function (r3) {
@@ -270,13 +299,15 @@
     });
   }
 
-  // 2) 设置快捷密码（哈希上云 + 本地缓存）→ 解锁
+  // 2) 设置快捷密码：哈希先存本地并立即解锁；云端写入放后台，网络不通不阻塞进入
   function setPassword(password) {
     return sha256Hex(password).then(function (hash) {
-      return putGateHash(getToken(), hash).then(function () {
-        markUnlocked();
-        return true;
+      localStorage.setItem(LS_GATE_HASH, hash);
+      markUnlocked();
+      putGateHash(getToken(), hash).catch(function (err) {
+        console.warn('[Cloud] 密码云端同步失败（已存本地，联网后可在设置里改一次密码触发重传）:', err.message);
       });
+      return true;
     });
   }
 
