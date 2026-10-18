@@ -3,7 +3,7 @@
  * 职责：缓存静态资源 + 离线可用 + 接受 app.js postMessage 触发通知
  */
 
-const CACHE_VERSION = 'popo-v31';
+const CACHE_VERSION = 'popo-v32';
 const PRECACHE_URLS = [
   './',
   './index.html',
