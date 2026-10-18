@@ -16,7 +16,7 @@
   // 卡片显示名（T4：去图标，英文/中文 格式）
   var CARD_TITLES = {
     top5: 'Must Do/今日必做',
-    dailySentence: 'Knowledge/今日知识',
+    dailySentence: 'Knowledge/今日一言',
     memoPreview: 'Memo/备忘'
   };
 
