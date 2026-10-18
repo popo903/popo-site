@@ -415,6 +415,8 @@ body {
 }
 .memo-del:hover { color: var(--color-danger); }
 .memo-edit:hover { color: var(--color-primary); }
+/* M12：编辑/删除图标与知识库同款 SVG，尺寸规则对齐 .sentence-actions */
+.memo-edit svg, .memo-del svg { width: 14px; height: 14px; vertical-align: -2px; display: inline-block; }
 
 /* ========================================
    知识库
